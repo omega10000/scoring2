@@ -122,6 +122,18 @@
             margin-left: auto;
         }
         .refresh-btn:hover { background: #f0efed; }
+        .secteur-header {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 700;
+            padding: 8px 12px; border-radius: 6px;
+            margin: 10px 0 6px;
+        }
+        .secteur-essonne { background: #d3e5ef; color: #2383e2; border-left: 4px solid #2383e2; }
+        .secteur-savoie  { background: #dbeddb; color: #0f7b0f; border-left: 4px solid #0f7b0f; }
+        .secteur-other   { background: #f0efed; color: #787774; border-left: 4px solid #d0cfcc; }
+        .secteur-count   { font-size: 10px; font-weight: 500; opacity: 0.8; margin-left: 4px; }
+        .card.essonne { border-top: 2px solid #2383e2; }
+        .card.savoie  { border-top: 2px solid #0f7b0f; }
     </style>
 </head>
 <body>
@@ -135,15 +147,17 @@
 
     <div class="legend">
         <span class="legend-title">Critères</span>
-        <span class="legend-item"><span class="legend-pts">30 pts</span> Renta ≥ 10%</span>
+        <span class="legend-item"><span class="legend-pts">50 pts</span> Cash-flow ≥ 100€</span>
         <span style="color:#d0cfcc">·</span>
-        <span class="legend-item"><span class="legend-pts">20 pts</span> Renta ≥ 7%</span>
+        <span class="legend-item"><span class="legend-pts">35 pts</span> Cash-flow ≥ 0€</span>
         <span style="color:#d0cfcc">·</span>
-        <span class="legend-item"><span class="legend-pts">20 pts</span> DPE A/B/C</span>
+        <span class="legend-item"><span class="legend-pts">25 pts</span> Renta ≥ 10%</span>
         <span style="color:#d0cfcc">·</span>
-        <span class="legend-item"><span class="legend-pts">25 pts</span> Prix ≤ 100k€</span>
+        <span class="legend-item"><span class="legend-pts">15 pts</span> Renta ≥ 7%</span>
         <span style="color:#d0cfcc">·</span>
-        <span class="legend-item"><span class="legend-pts">25 pts</span> Travaux ≤ 5k€</span>
+        <span class="legend-item"><span class="legend-pts">15 pts</span> Travaux > 0</span>
+        <span style="color:#d0cfcc">·</span>
+        <span class="legend-item"><span class="legend-pts">10 pts</span> Prix ≤ 100k€</span>
         <span style="margin-left:auto; font-size:10px; font-weight:600; color:#0f7b0f;">≥ 70 pts = Excellent</span>
     </div>
 
@@ -154,18 +168,43 @@
         </div>
     </div>
 
+    <div id="secteurs" style="display:none">
+        <div class="secteur-header secteur-essonne">
+            <span class="secteur-icon">🔵</span> Essonne
+            <span class="secteur-count" id="count-essonne"></span>
+        </div>
+        <div class="grid" id="grid-essonne"></div>
+
+        <div class="secteur-header secteur-savoie">
+            <span class="secteur-icon">🟢</span> Haute-Savoie
+            <span class="secteur-count" id="count-savoie"></span>
+        </div>
+        <div class="grid" id="grid-savoie"></div>
+
+        <div class="secteur-header secteur-other" id="header-other" style="display:none">
+            <span class="secteur-icon">⚪</span> Secteur non défini
+            <span class="secteur-count" id="count-other"></span>
+        </div>
+        <div class="grid" id="grid-other"></div>
+    </div>
+
 </div>
 
 <script>
     // ← L'URL de ton API Vercel (à remplacer après déploiement)
     const API_URL = '/api/annonces';
 
+    const TAUX = 3.5 / 100 / 12;
+    const DUREE = 240; // 20 ans
+    const mensualiteCredit = (prix) => prix * TAUX / (1 - Math.pow(1 + TAUX, -DUREE));
+
     const CRITERES = [
-        { label: 'Rentabilité ≥ 10%', pts: 30, check: a => a.rentaBrute >= 10 },
-        { label: 'Rentabilité ≥ 7%',  pts: 20, check: a => a.rentaBrute >= 7 && a.rentaBrute < 10 },
-        { label: 'DPE A, B ou C',     pts: 20, check: a => ['A','B','C'].includes(a.dpe) },
-        { label: 'Prix ≤ 100 000 €',  pts: 25, check: a => a.prix <= 100000 },
-        { label: 'Travaux ≤ 5 000 €', pts: 25, check: a => a.travaux <= 5000 },
+        { label: 'Cash-flow ≥ 100 €/mois', pts: 50, check: a => a.cashflow >= 100 },
+        { label: 'Cash-flow ≥ 0 €/mois',   pts: 35, check: a => a.cashflow >= 0 && a.cashflow < 100 },
+        { label: 'Rentabilité ≥ 10%',       pts: 25, check: a => a.rentaBrute >= 10 },
+        { label: 'Rentabilité ≥ 7%',        pts: 15, check: a => a.rentaBrute >= 7 && a.rentaBrute < 10 },
+        { label: 'Travaux > 0 € (opportunité)', pts: 15, check: a => a.travaux > 0 },
+        { label: 'Prix ≤ 100 000 €',        pts: 10, check: a => a.prix <= 100000 },
     ];
 
     const fmt = n => n > 0 ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
@@ -177,9 +216,18 @@
     };
 
     function calcScore(a) {
+        a.cashflow = a.loyer - mensualiteCredit(a.prix) - (a.chargesCopro / 12) - (a.taxeFonciere / 12);
         let total = 0;
-        const detail = CRITERES.map(c => { const ok = c.check(a); if (ok) total += c.pts; return {...c, ok}; });
-        return { total, detail };
+        // Cash-flow : seulement le meilleur palier s'applique
+        if (a.cashflow >= 100) total += 50;
+        else if (a.cashflow >= 0) total += 35;
+        const detail = CRITERES.map(c => {
+            // CF déjà compté, on passe les 2 premiers pour le detail
+            const ok = c.check(a);
+            if (!c.label.startsWith('Cash-flow') && ok) total += c.pts;
+            return {...c, ok};
+        });
+        return { total: Math.min(total, 100), detail };
     }
 
     const badgeCls = s => s >= 70 ? 's-excellent' : s >= 40 ? 's-moyen' : 's-faible';
@@ -191,6 +239,7 @@
     async function loadAnnonces() {
         const grid = document.getElementById('grid');
         grid.innerHTML = '<div class="state-box"><div class="spinner"></div>Chargement…</div>';
+        document.getElementById('secteurs').style.display = 'none';
 
         try {
             const res = await fetch(API_URL);
@@ -208,56 +257,79 @@
 
             const now = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
             document.getElementById('last-update').textContent =
-                `Brice · Vincent · Justine — ${scored.length} annonces · mis à jour à ${now}`;
+                `Brice · Vincent · Justine — ${scored.length} annonces · ${now}`;
 
-            grid.innerHTML = scored.map((a, i) => `
-                <div class="card ${i < 3 ? 'top' : ''}">
-                    <div class="rank ${rankCls(i)}">${i+1}</div>
-                    <div class="card-head">
-                        <div class="card-meta">
-                            <div class="card-title">
-                                ${a.lien ? `<a href="${a.lien}" target="_blank">${a.titre}</a>` : a.titre}
-                            </div>
-                            <div class="card-tags">
-                                <span class="tag ${STATUT_MAP[a.statut] || 't-analyser'}">${a.statut || '—'}</span>
-                                ${a.ville ? `<span class="tag t-ville">${a.ville}</span>` : ''}
-                            </div>
-                        </div>
-                        <div class="score-badge ${badgeCls(a.total)}">
-                            <div class="score-val">${a.total}</div>
-                            <div class="score-max">/ 100</div>
-                            <span class="score-label">${badgeLbl(a.total)}</span>
-                        </div>
-                    </div>
+            const essonne = scored.filter(a => a.secteur === 'Essonne');
+            const savoie  = scored.filter(a => a.secteur === 'Haute-Savoie');
+            const other   = scored.filter(a => a.secteur !== 'Essonne' && a.secteur !== 'Haute-Savoie');
 
-                    <div class="infos">
-                        <div class="info"><span class="info-l">Prix</span><span class="info-v">${fmt(a.prix)}</span></div>
-                        <div class="info"><span class="info-l">Loyer</span><span class="info-v">${fmt(a.loyer)}/m</span></div>
-                        <div class="info"><span class="info-l">DPE</span><span class="dpe dpe-${a.dpe}">${a.dpe}</span></div>
-                        <div class="info"><span class="info-l">Renta</span><span class="info-v ${rentaCls(a.rentaBrute)}">${fmtPct(a.rentaBrute)}</span></div>
-                        <div class="info"><span class="info-l">Travaux</span><span class="info-v">${a.travaux > 0 ? fmt(a.travaux) : '—'}</span></div>
-                        ${a.surface ? `<div class="info"><span class="info-l">Surface</span><span class="info-v">${a.surface} m²</span></div>` : '<div class="info"></div>'}
-                    </div>
+            grid.innerHTML = '';
+            document.getElementById('secteurs').style.display = 'block';
 
-                    <div class="criteria">
-                        ${a.detail.map(c => `
-                            <div class="crit">
-                                <div class="crit-dot ${c.ok?'ok':'nok'}">${c.ok?'✓':'·'}</div>
-                                <span class="crit-pts ${c.ok?'ok':'nok'}">${c.ok?'+'+c.pts:'—'}</span>
-                            </div>`).join('')}
-                    </div>
+            document.getElementById('count-essonne').textContent = `— ${essonne.length} annonce${essonne.length > 1 ? 's' : ''}`;
+            document.getElementById('count-savoie').textContent  = `— ${savoie.length} annonce${savoie.length > 1 ? 's' : ''}`;
 
-                    <div class="bar-wrap">
-                        <div class="bar-track">
-                            <div class="bar-fill" style="width:${a.total}%;background:${barClr(a.total)}"></div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+            document.getElementById('grid-essonne').innerHTML = essonne.length
+                ? renderCards(essonne, 'essonne')
+                : '<div class="state-box" style="grid-column:1/-1;padding:12px">Aucune annonce Essonne</div>';
+
+            document.getElementById('grid-savoie').innerHTML = savoie.length
+                ? renderCards(savoie, 'savoie')
+                : '<div class="state-box" style="grid-column:1/-1;padding:12px">Aucune annonce Haute-Savoie</div>';
+
+            if (other.length) {
+                document.getElementById('header-other').style.display = 'flex';
+                document.getElementById('count-other').textContent = `— ${other.length} annonce${other.length > 1 ? 's' : ''}`;
+                document.getElementById('grid-other').innerHTML = renderCards(other, '');
+            }
 
         } catch(e) {
             grid.innerHTML = `<div class="state-box error"><div class="icon">⚠️</div>${e.message}</div>`;
         }
+    }
+
+    function renderCards(list, secteurCls) {
+        return list.map((a, i) => `
+            <div class="card ${i < 3 ? 'top' : ''} ${secteurCls}">
+                <div class="rank ${rankCls(i)}">${i+1}</div>
+                <div class="card-head">
+                    <div class="card-meta">
+                        <div class="card-title">
+                            ${a.lien ? `<a href="${a.lien}" target="_blank">${a.titre}</a>` : a.titre}
+                        </div>
+                        <div class="card-tags">
+                            <span class="tag ${STATUT_MAP[a.statut] || 't-analyser'}">${a.statut || '—'}</span>
+                            ${a.ville ? `<span class="tag t-ville">${a.ville}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="score-badge ${badgeCls(a.total)}">
+                        <div class="score-val">${a.total}</div>
+                        <div class="score-max">/ 100</div>
+                        <span class="score-label">${badgeLbl(a.total)}</span>
+                    </div>
+                </div>
+                <div class="infos">
+                    <div class="info"><span class="info-l">Prix</span><span class="info-v">${fmt(a.prix)}</span></div>
+                    <div class="info"><span class="info-l">Loyer</span><span class="info-v">${fmt(a.loyer)}/m</span></div>
+                    <div class="info"><span class="info-l">DPE</span><span class="dpe dpe-${a.dpe}">${a.dpe}</span></div>
+                    <div class="info"><span class="info-l">Cash-flow</span><span class="info-v ${a.cashflow >= 100 ? 'rv-good' : a.cashflow >= 0 ? 'rv-ok' : 'rv-bad'}">${a.cashflow >= 0 ? '+' : ''}${Math.round(a.cashflow)} €</span></div>
+                    <div class="info"><span class="info-l">Renta</span><span class="info-v ${rentaCls(a.rentaBrute)}">${fmtPct(a.rentaBrute)}</span></div>
+                    <div class="info"><span class="info-l">Travaux</span><span class="info-v">${a.travaux > 0 ? fmt(a.travaux) : '—'}</span></div>
+                </div>
+                <div class="criteria">
+                    ${a.detail.map(c => `
+                        <div class="crit">
+                            <div class="crit-dot ${c.ok?'ok':'nok'}">${c.ok?'✓':'·'}</div>
+                            <span class="crit-pts ${c.ok?'ok':'nok'}">${c.ok?'+'+c.pts:'—'}</span>
+                        </div>`).join('')}
+                </div>
+                <div class="bar-wrap">
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:${a.total}%;background:${barClr(a.total)}"></div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
     loadAnnonces();
