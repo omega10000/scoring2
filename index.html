@@ -119,7 +119,7 @@
         .refresh-btn {
             background: none; border: 1px solid #e0dfdc; border-radius: 5px;
             padding: 4px 10px; font-size: 10px; color: #787774; cursor: pointer;
-            margin-left: auto;
+            flex-shrink: 0;
         }
         .refresh-btn:hover { background: #f0efed; }
         .secteur-header {
@@ -140,9 +140,9 @@
 <div class="container">
 
     <div class="header">
+        <button class="refresh-btn" onclick="loadAnnonces()">⟳ Actualiser</button>
         <h1>📐 Scoring Annonces Immobilières</h1>
         <span class="subtitle" id="last-update">Chargement…</span>
-        <button class="refresh-btn" onclick="loadAnnonces()">⟳ Actualiser</button>
     </div>
 
     <div class="legend">
