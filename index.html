@@ -44,30 +44,30 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 
         .card {
-            background: white; border-radius: 6px; padding: 10px 12px;
+            background: white; border-radius: 6px; padding: 8px 10px;
             border: 1px solid #e8e7e4; position: relative;
         }
         .card.top { border-left: 3px solid #d9730d; }
 
         .rank {
-            position: absolute; top: 9px; left: -5px;
-            width: 18px; height: 18px; border-radius: 50%;
-            font-size: 9px; font-weight: 700;
+            position: absolute; top: 7px; left: -4px;
+            width: 15px; height: 15px; border-radius: 50%;
+            font-size: 8px; font-weight: 700;
             display: flex; align-items: center; justify-content: center; color: white;
         }
         .r1 { background: #d9730d; } .r2 { background: #787774; }
         .r3 { background: #9065b0; } .rn { background: #d0cfcc; color: #37352f; }
 
-        .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 7px; gap: 8px; }
-        .card-meta { flex: 1; padding-left: 18px; }
-        .card-title { font-size: 12px; font-weight: 700; line-height: 1.3; margin-bottom: 3px; }
+        .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; gap: 4px; }
+        .card-meta { flex: 1; padding-left: 14px; min-width: 0; }
+        .card-title { font-size: 10px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-title a { color: #37352f; text-decoration: none; }
         .card-title a:hover { color: #2383e2; }
-        .card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-        .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 9px; font-weight: 500; }
+        .card-tags { display: flex; gap: 3px; flex-wrap: wrap; }
+        .tag { display: inline-block; padding: 1px 4px; border-radius: 3px; font-size: 8px; font-weight: 500; }
         .t-analyser    { background: #f0efed; color: #6b6b68; }
         .t-interessant { background: #fef3c7; color: #d9730d; }
         .t-visite      { background: #d3e5ef; color: #2383e2; }
@@ -76,9 +76,9 @@
         .t-ville       { background: #f0efed; color: #787774; }
 
         .score-badge { flex-shrink: 0; text-align: center; }
-        .score-val { font-size: 24px; font-weight: 700; line-height: 1; }
-        .score-max { font-size: 9px; color: #787774; }
-        .score-label { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 3px; margin-top: 3px; display: block; }
+        .score-val { font-size: 18px; font-weight: 700; line-height: 1; }
+        .score-max { font-size: 8px; color: #787774; }
+        .score-label { font-size: 8px; font-weight: 600; padding: 1px 4px; border-radius: 3px; margin-top: 2px; display: block; }
         .s-excellent .score-val { color: #0f7b0f; }
         .s-excellent .score-label { background: #dbeddb; color: #0f7b0f; }
         .s-moyen .score-val { color: #d9730d; }
@@ -86,13 +86,14 @@
         .s-faible .score-val { color: #e03e3e; }
         .s-faible .score-label { background: #fde8e8; color: #e03e3e; }
 
-        .infos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 7px; }
-        .info { display: flex; flex-direction: column; gap: 1px; }
-        .info-l { font-size: 9px; color: #787774; text-transform: uppercase; letter-spacing: 0.3px; }
-        .info-v { font-size: 11px; font-weight: 600; }
+        /* INFOS en grille 3x2 */
+        .infos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 6px; margin-bottom: 5px; }
+        .info { display: flex; flex-direction: column; gap: 0; }
+        .info-l { font-size: 8px; color: #787774; text-transform: uppercase; letter-spacing: 0.2px; }
+        .info-v { font-size: 10px; font-weight: 600; }
         .rv-good { color: #0f7b0f; } .rv-ok { color: #d9730d; } .rv-bad { color: #e03e3e; }
 
-        .dpe { display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; }
+        .dpe { display: inline-block; padding: 0px 4px; border-radius: 2px; font-size: 9px; font-weight: 700; }
         .dpe-A { background: #2e7d32; color: white; }
         .dpe-B { background: #388e3c; color: white; }
         .dpe-C { background: #66bb6a; color: #1a1a1a; }
@@ -102,20 +103,18 @@
         .dpe-G { background: #7b1fa2; color: white; }
         .dpe-NC, .dpe-\\? { background: #ccc; color: #555; }
 
-        .criteria { display: flex; flex-direction: column; gap: 3px; margin-bottom: 7px; }
-        .crit { display: flex; align-items: center; gap: 6px; }
-        .crit-icon { width: 13px; height: 13px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 8px; flex-shrink: 0; }
-        .crit-icon.ok  { background: #dbeddb; color: #0f7b0f; }
-        .crit-icon.nok { background: #f0efed; color: #aaa; }
-        .crit-name { font-size: 10px; color: #6b6b68; flex: 1; }
-        .crit-pts { font-size: 10px; font-weight: 600; width: 34px; text-align: right; }
-        .crit-pts.ok { color: #0f7b0f; } .crit-pts.nok { color: #ccc; }
+        /* CRITÈRES en ligne horizontale avec points */
+        .criteria { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
+        .crit { display: flex; align-items: center; gap: 2px; }
+        .crit-dot { width: 10px; height: 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 7px; flex-shrink: 0; }
+        .crit-dot.ok  { background: #dbeddb; color: #0f7b0f; }
+        .crit-dot.nok { background: #f0efed; color: #ccc; }
+        .crit-pts { font-size: 8px; font-weight: 600; }
+        .crit-pts.ok { color: #0f7b0f; } .crit-pts.nok { color: #d0cfcc; }
 
-        .bar-wrap { margin-bottom: 7px; }
-        .bar-track { height: 4px; background: #f0efed; border-radius: 2px; overflow: hidden; }
+        .bar-wrap { }
+        .bar-track { height: 3px; background: #f0efed; border-radius: 2px; overflow: hidden; }
         .bar-fill { height: 100%; border-radius: 2px; }
-
-        .note { font-size: 10px; color: #787774; font-style: italic; border-top: 1px solid #f5f4f1; padding-top: 6px; }
 
         .refresh-btn {
             background: none; border: 1px solid #e0dfdc; border-radius: 5px;
@@ -234,17 +233,16 @@
                     <div class="infos">
                         <div class="info"><span class="info-l">Prix</span><span class="info-v">${fmt(a.prix)}</span></div>
                         <div class="info"><span class="info-l">Loyer</span><span class="info-v">${fmt(a.loyer)}/m</span></div>
-                        <div class="info"><span class="info-l">Travaux</span><span class="info-v">${a.travaux > 0 ? fmt(a.travaux) : '—'}</span></div>
-                        <div class="info"><span class="info-l">Renta brute</span><span class="info-v ${rentaCls(a.rentaBrute)}">${fmtPct(a.rentaBrute)}</span></div>
-                        ${a.surface ? `<div class="info"><span class="info-l">Surface</span><span class="info-v">${a.surface} m²</span></div>` : ''}
                         <div class="info"><span class="info-l">DPE</span><span class="dpe dpe-${a.dpe}">${a.dpe}</span></div>
+                        <div class="info"><span class="info-l">Renta</span><span class="info-v ${rentaCls(a.rentaBrute)}">${fmtPct(a.rentaBrute)}</span></div>
+                        <div class="info"><span class="info-l">Travaux</span><span class="info-v">${a.travaux > 0 ? fmt(a.travaux) : '—'}</span></div>
+                        ${a.surface ? `<div class="info"><span class="info-l">Surface</span><span class="info-v">${a.surface} m²</span></div>` : '<div class="info"></div>'}
                     </div>
 
                     <div class="criteria">
                         ${a.detail.map(c => `
                             <div class="crit">
-                                <div class="crit-icon ${c.ok?'ok':'nok'}">${c.ok?'✓':'·'}</div>
-                                <span class="crit-name">${c.label}</span>
+                                <div class="crit-dot ${c.ok?'ok':'nok'}">${c.ok?'✓':'·'}</div>
                                 <span class="crit-pts ${c.ok?'ok':'nok'}">${c.ok?'+'+c.pts:'—'}</span>
                             </div>`).join('')}
                     </div>
@@ -254,8 +252,6 @@
                             <div class="bar-fill" style="width:${a.total}%;background:${barClr(a.total)}"></div>
                         </div>
                     </div>
-
-                    ${a.commentaires ? `<div class="note">💬 ${a.commentaires}</div>` : ''}
                 </div>
             `).join('');
 
