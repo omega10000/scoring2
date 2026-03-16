@@ -43,9 +43,11 @@ export default async function handler(req, res) {
         }
       };
 
-      const prix   = get('Prix', 'number') || 0;
-      const loyer  = get('Loyer estimé', 'number') || 0;
-      const travaux= get('Travaux estimés', 'number') || 0;
+      const prix        = get('Prix', 'number') || 0;
+      const loyer       = get('Loyer estimé', 'number') || 0;
+      const travaux     = get('Travaux estimés', 'number') || 0;
+      const chargesCopro= get('Charges copro', 'number') || 0;
+      const taxeFonciere= get('Taxe foncière', 'number') || 0;
 
       return {
         id:          page.id,
@@ -53,6 +55,9 @@ export default async function handler(req, res) {
         prix,
         loyer,
         travaux,
+        chargesCopro,
+        taxeFonciere,
+        secteur:     get('Secteur', 'select') || '',
         dpe:         get('DPE', 'select') || '?',
         ville:       get('Ville', 'rich_text') || '',
         statut:      get('Statut', 'select') || '',
