@@ -13,11 +13,9 @@
             font-size: 12px;
         }
         .container { max-width: 980px; margin: 0 auto; padding: 10px 14px; }
-
         .header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
         h1 { font-size: 16px; font-weight: 700; }
         .subtitle { color: #787774; font-size: 11px; }
-
         .legend {
             background: white; border-radius: 6px; padding: 8px 12px;
             border: 1px solid #e8e7e4; margin-bottom: 8px;
@@ -26,7 +24,6 @@
         .legend-title { font-size: 10px; font-weight: 600; color: #787774; text-transform: uppercase; letter-spacing: 0.4px; }
         .legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #6b6b68; }
         .legend-pts { font-weight: 700; color: #0f7b0f; }
-
         /* LOADING / ERROR */
         .state-box {
             background: white; border-radius: 6px; padding: 24px;
@@ -35,7 +32,6 @@
         }
         .state-box .icon { font-size: 24px; margin-bottom: 8px; }
         .state-box.error { background: #fde8e8; border-color: #f5c6c6; color: #e03e3e; }
-
         .spinner {
             width: 20px; height: 20px; border: 2px solid #e0dfdc;
             border-top-color: #2383e2; border-radius: 50%;
@@ -43,15 +39,12 @@
             margin: 0 auto 8px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-
         .card {
             background: white; border-radius: 6px; padding: 8px 10px;
             border: 1px solid #e8e7e4; position: relative;
         }
         .card.top { border-left: 3px solid #d9730d; }
-
         .rank {
             position: absolute; top: 7px; left: -4px;
             width: 15px; height: 15px; border-radius: 50%;
@@ -60,7 +53,6 @@
         }
         .r1 { background: #d9730d; } .r2 { background: #787774; }
         .r3 { background: #9065b0; } .rn { background: #d0cfcc; color: #37352f; }
-
         .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; gap: 4px; }
         .card-meta { flex: 1; padding-left: 14px; min-width: 0; }
         .card-title { font-size: 10px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -74,7 +66,6 @@
         .t-refuse      { background: #fde8e8; color: #e03e3e; }
         .t-offre       { background: #dbeddb; color: #0f7b0f; }
         .t-ville       { background: #f0efed; color: #787774; }
-
         .score-badge { flex-shrink: 0; text-align: center; }
         .score-val { font-size: 18px; font-weight: 700; line-height: 1; }
         .score-max { font-size: 8px; color: #787774; }
@@ -85,14 +76,12 @@
         .s-moyen .score-label { background: #fadec9; color: #d9730d; }
         .s-faible .score-val { color: #e03e3e; }
         .s-faible .score-label { background: #fde8e8; color: #e03e3e; }
-
         /* INFOS en grille 3x2 */
         .infos { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3px 6px; margin-bottom: 5px; }
         .info { display: flex; flex-direction: column; gap: 0; }
         .info-l { font-size: 8px; color: #787774; text-transform: uppercase; letter-spacing: 0.2px; }
         .info-v { font-size: 10px; font-weight: 600; }
         .rv-good { color: #0f7b0f; } .rv-ok { color: #d9730d; } .rv-bad { color: #e03e3e; }
-
         .dpe { display: inline-block; padding: 0px 4px; border-radius: 2px; font-size: 9px; font-weight: 700; }
         .dpe-A { background: #2e7d32; color: white; }
         .dpe-B { background: #388e3c; color: white; }
@@ -101,8 +90,7 @@
         .dpe-E { background: #fb8c00; color: white; }
         .dpe-F { background: #e53935; color: white; }
         .dpe-G { background: #7b1fa2; color: white; }
-        .dpe-NC, .dpe-\\? { background: #ccc; color: #555; }
-
+        .dpe-NC, .dpe-\? { background: #ccc; color: #555; }
         /* CRITÈRES en ligne horizontale avec points */
         .criteria { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 5px; }
         .crit { display: flex; align-items: center; gap: 2px; }
@@ -111,11 +99,9 @@
         .crit-dot.nok { background: #f0efed; color: #ccc; }
         .crit-pts { font-size: 8px; font-weight: 600; }
         .crit-pts.ok { color: #0f7b0f; } .crit-pts.nok { color: #d0cfcc; }
-
         .bar-wrap { }
         .bar-track { height: 3px; background: #f0efed; border-radius: 2px; overflow: hidden; }
         .bar-fill { height: 100%; border-radius: 2px; }
-
         .refresh-btn {
             background: none; border: 1px solid #e0dfdc; border-radius: 5px;
             padding: 4px 10px; font-size: 10px; color: #787774; cursor: pointer;
@@ -138,13 +124,11 @@
 </head>
 <body>
 <div class="container">
-
     <div class="header">
         <button class="refresh-btn" onclick="loadAnnonces()">⟳ Actualiser</button>
         <h1>📐 Scoring Annonces Immobilières</h1>
         <span class="subtitle" id="last-update">Chargement…</span>
     </div>
-
     <div class="legend">
         <span class="legend-title">Critères</span>
         <span class="legend-item"><span class="legend-pts">50 pts</span> Cash-flow ≥ 100€</span>
@@ -160,102 +144,112 @@
         <span class="legend-item"><span class="legend-pts">10 pts</span> Prix ≤ 100k€</span>
         <span style="margin-left:auto; font-size:10px; font-weight:600; color:#0f7b0f;">≥ 70 pts = Excellent</span>
     </div>
-
     <div class="grid" id="grid">
         <div class="state-box">
             <div class="spinner"></div>
             Chargement des annonces…
         </div>
     </div>
-
     <div id="secteurs" style="display:none">
         <div class="secteur-header secteur-essonne">
             <span class="secteur-icon">🔵</span> Essonne
             <span class="secteur-count" id="count-essonne"></span>
         </div>
         <div class="grid" id="grid-essonne"></div>
-
         <div class="secteur-header secteur-savoie">
             <span class="secteur-icon">🟢</span> Haute-Savoie
             <span class="secteur-count" id="count-savoie"></span>
         </div>
         <div class="grid" id="grid-savoie"></div>
-
         <div class="secteur-header secteur-other" id="header-other" style="display:none">
             <span class="secteur-icon">⚪</span> Secteur non défini
             <span class="secteur-count" id="count-other"></span>
         </div>
         <div class="grid" id="grid-other"></div>
     </div>
-
 </div>
-
 <script>
-    // ← L'URL de ton API Vercel (à remplacer après déploiement)
     const API_URL = '/api/annonces';
 
-    const TAUX = 3.5 / 100 / 12;
-    const DUREE = 240; // 20 ans
-    const mensualiteCredit = (prix) => prix * TAUX / (1 - Math.pow(1 + TAUX, -DUREE));
+    // ── Constantes crédit ─────────────────────────────────────────────────────
+    const TAUX_ANNUEL   = 3.5 / 100;          // 3,5 % taux crédit annuel
+    const TAUX          = TAUX_ANNUEL / 12;    // taux mensuel
+    const DUREE         = 240;                 // 20 ans
+    const ASSURANCE     = 0.003 / 12;          // 0,30 % annuel → mensuel
 
+    // Mensualité sur l'emprunt réel (prix + travaux, notaire payé cash)
+    const mensualiteCredit = (emprunt) =>
+        emprunt > 0 ? emprunt * TAUX / (1 - Math.pow(1 + TAUX, -DUREE)) : 0;
+
+    // ── Critères de scoring ───────────────────────────────────────────────────
     const CRITERES = [
-        { label: 'Cash-flow ≥ 100 €/mois', pts: 50, check: a => a.cashflow >= 100 },
-        { label: 'Cash-flow ≥ 0 €/mois',   pts: 35, check: a => a.cashflow >= 0 && a.cashflow < 100 },
-        { label: 'Rentabilité ≥ 10%',       pts: 25, check: a => a.rentaBrute >= 10 },
-        { label: 'Rentabilité ≥ 7%',        pts: 15, check: a => a.rentaBrute >= 7 && a.rentaBrute < 10 },
-        { label: 'Travaux > 0 € (opportunité)', pts: 15, check: a => a.travaux > 0 },
-        { label: 'Prix ≤ 100 000 €',        pts: 10, check: a => a.prix <= 100000 },
+        { label: 'Cash-flow ≥ 100 €/mois',       pts: 50, check: a => a.cashflow >= 100 },
+        { label: 'Cash-flow ≥ 0 €/mois',          pts: 35, check: a => a.cashflow >= 0 && a.cashflow < 100 },
+        { label: 'Rentabilité ≥ 10%',             pts: 25, check: a => a.rentaBrute >= 10 },
+        { label: 'Rentabilité ≥ 7%',              pts: 15, check: a => a.rentaBrute >= 7 && a.rentaBrute < 10 },
+        { label: 'Travaux > 0 € (opportunité)',   pts: 15, check: a => a.travaux > 0 },
+        { label: 'Prix ≤ 100 000 €',              pts: 10, check: a => a.prix <= 100000 },
     ];
 
-    const fmt = n => n > 0 ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
-    const fmtPct = n => n.toFixed(1) + ' %';
-
+    const fmt    = n  => n > 0 ? new Intl.NumberFormat('fr-FR').format(n) + ' €' : '—';
+    const fmtPct = n  => n.toFixed(1) + ' %';
     const STATUT_MAP = {
         'À analyser':'t-analyser','Intéressant':'t-interessant','Visite prévue':'t-visite',
         'Refusé':'t-refuse','Offre faite':'t-offre','Accepté':'t-offre','En attente':'t-analyser'
     };
 
+    // ── Calcul du cash-flow & score ───────────────────────────────────────────
     function calcScore(a) {
-        a.cashflow = a.loyer - mensualiteCredit(a.prix) - (a.chargesCopro / 12) - (a.taxeFonciere / 12);
+        // Emprunt = prix + travaux (les frais de notaire ~8% sont payés cash, non financés)
+        const emprunt   = (a.prix || 0) + (a.travaux || 0);
+        const mensualite = mensualiteCredit(emprunt);
+        const assurance  = emprunt * ASSURANCE;
+
+        a.cashflow = (a.loyer || 0)
+            - mensualite
+            - assurance
+            - (a.chargesCopro || 0) / 12
+            - (a.taxeFonciere  || 0) / 12;
+
         let total = 0;
         // Cash-flow : seulement le meilleur palier s'applique
-        if (a.cashflow >= 100) total += 50;
-        else if (a.cashflow >= 0) total += 35;
+        if      (a.cashflow >= 100) total += 50;
+        else if (a.cashflow >= 0)   total += 35;
+
         const detail = CRITERES.map(c => {
-            // CF déjà compté, on passe les 2 premiers pour le detail
             const ok = c.check(a);
+            // CF déjà compté ci-dessus → on saute les 2 premiers pour le total
             if (!c.label.startsWith('Cash-flow') && ok) total += c.pts;
-            return {...c, ok};
+            return { ...c, ok };
         });
+
         return { total: Math.min(total, 100), detail };
     }
 
     const badgeCls = s => s >= 70 ? 's-excellent' : s >= 40 ? 's-moyen' : 's-faible';
-    const badgeLbl = s => s >= 70 ? 'Excellent'   : s >= 40 ? 'Moyen'    : 'Faible';
-    const barClr   = s => s >= 70 ? '#0f7b0f'     : s >= 40 ? '#d9730d'  : '#e03e3e';
-    const rentaCls = r => r >= 8  ? 'rv-good'     : r >= 6  ? 'rv-ok'    : 'rv-bad';
+    const badgeLbl = s => s >= 70 ? 'Excellent'   : s >= 40 ? 'Moyen'   : 'Faible';
+    const barClr   = s => s >= 70 ? '#0f7b0f'     : s >= 40 ? '#d9730d' : '#e03e3e';
+    const rentaCls = r => r >= 8  ? 'rv-good'     : r >= 6  ? 'rv-ok'   : 'rv-bad';
     const rankCls  = i => ['r1','r2','r3'][i] || 'rn';
 
+    // ── Chargement des données ────────────────────────────────────────────────
     async function loadAnnonces() {
         const grid = document.getElementById('grid');
         grid.innerHTML = '<div class="state-box"><div class="spinner"></div>Chargement…</div>';
         document.getElementById('secteurs').style.display = 'none';
-
         try {
             const res = await fetch(API_URL);
             if (!res.ok) throw new Error(`Erreur ${res.status}`);
             const annonces = await res.json();
-
             if (!annonces.length) {
                 grid.innerHTML = '<div class="state-box"><div class="icon">🏠</div>Aucune annonce trouvée.</div>';
                 return;
             }
-
             const scored = annonces
-                .map(a => { const {total, detail} = calcScore(a); return {...a, total, detail}; })
+                .map(a => { const { total, detail } = calcScore(a); return { ...a, total, detail }; })
                 .sort((a, b) => b.total - a.total);
 
-            const now = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+            const now = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('last-update').textContent =
                 `Brice · Vincent · Justine — ${scored.length} annonces · ${now}`;
 
@@ -265,14 +259,12 @@
 
             grid.innerHTML = '';
             document.getElementById('secteurs').style.display = 'block';
-
             document.getElementById('count-essonne').textContent = `— ${essonne.length} annonce${essonne.length > 1 ? 's' : ''}`;
             document.getElementById('count-savoie').textContent  = `— ${savoie.length} annonce${savoie.length > 1 ? 's' : ''}`;
 
             document.getElementById('grid-essonne').innerHTML = essonne.length
                 ? renderCards(essonne, 'essonne')
                 : '<div class="state-box" style="grid-column:1/-1;padding:12px">Aucune annonce Essonne</div>';
-
             document.getElementById('grid-savoie').innerHTML = savoie.length
                 ? renderCards(savoie, 'savoie')
                 : '<div class="state-box" style="grid-column:1/-1;padding:12px">Aucune annonce Haute-Savoie</div>';
@@ -282,16 +274,16 @@
                 document.getElementById('count-other').textContent = `— ${other.length} annonce${other.length > 1 ? 's' : ''}`;
                 document.getElementById('grid-other').innerHTML = renderCards(other, '');
             }
-
-        } catch(e) {
+        } catch (e) {
             grid.innerHTML = `<div class="state-box error"><div class="icon">⚠️</div>${e.message}</div>`;
         }
     }
 
+    // ── Rendu des cartes ──────────────────────────────────────────────────────
     function renderCards(list, secteurCls) {
         return list.map((a, i) => `
             <div class="card ${i < 3 ? 'top' : ''} ${secteurCls}">
-                <div class="rank ${rankCls(i)}">${i+1}</div>
+                <div class="rank ${rankCls(i)}">${i + 1}</div>
                 <div class="card-head">
                     <div class="card-meta">
                         <div class="card-title">
@@ -319,8 +311,8 @@
                 <div class="criteria">
                     ${a.detail.map(c => `
                         <div class="crit">
-                            <div class="crit-dot ${c.ok?'ok':'nok'}">${c.ok?'✓':'·'}</div>
-                            <span class="crit-pts ${c.ok?'ok':'nok'}">${c.ok?'+'+c.pts:'—'}</span>
+                            <div class="crit-dot ${c.ok ? 'ok' : 'nok'}">${c.ok ? '✓' : '·'}</div>
+                            <span class="crit-pts ${c.ok ? 'ok' : 'nok'}">${c.ok ? '+' + c.pts : '—'}</span>
                         </div>`).join('')}
                 </div>
                 <div class="bar-wrap">
